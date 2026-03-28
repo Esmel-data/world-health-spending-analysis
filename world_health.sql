@@ -5,7 +5,7 @@ SELECT
     health_spending_category,
     COUNT(DISTINCT country)                         AS nb_countries,
     ROUND(AVG(health_spending_pct_gdp), 2)          AS avg_spending_pct_gdp
-FROM world_health_data_clean
+FROM world_health
 WHERE health_spending_pct_gdp IS NOT NULL
 GROUP BY health_spending_category
 ORDER BY avg_spending_pct_gdp DESC;
@@ -20,7 +20,7 @@ SELECT
     life_expectancy_years,
     life_expectancy_category,
     health_spending_category
-FROM world_health_data_clean
+FROM world_health
 WHERE year = (SELECT MAX(year) FROM world_health_data_clean)
 ORDER BY life_expectancy_years ASC
 LIMIT 10;
@@ -35,7 +35,7 @@ SELECT
     ROUND(AVG(health_spending_pct_gdp), 2)  AS avg_spending,
     ROUND(AVG(life_expectancy_years), 1)    AS avg_life_expectancy,
     ROUND(AVG(health_roi_score), 2)         AS avg_roi_score
-FROM world_health_data_clean
+FROM world_health
 WHERE health_spending_category IN ('Low', 'Medium')
     AND health_roi_score IS NOT NULL
 GROUP BY country, country_code, health_spending_category
@@ -51,7 +51,7 @@ SELECT
     ROUND(AVG(avoidable_mortality_index), 3)    AS avg_mortality_index,
     ROUND(AVG(infectious_disease_index), 3)     AS avg_infectious_index,
     health_spending_category
-FROM world_health_data_clean
+FROM world_health
 WHERE avoidable_mortality_index > 0.6
     AND infectious_disease_index > 0.6
 GROUP BY country, country_code, health_spending_category
@@ -70,7 +70,7 @@ SELECT
     life_expectancy_category,
     health_roi_score,
     performance_gap_flag
-FROM world_health_data_clean
+FROM world_health
 WHERE performance_gap_flag = 'Critical Gap'
 ORDER BY health_roi_score ASC;
 
@@ -83,7 +83,7 @@ SELECT
     ROUND(avoidable_mortality_index, 3)     AS mortality_index,
     life_expectancy_years,
     health_spending_category
-FROM world_health_data_clean
+FROM world_health
 WHERE year = (SELECT MAX(year) FROM world_health_data_clean)
     AND avoidable_mortality_index IS NOT NULL
 ORDER BY avoidable_mortality_index DESC
@@ -98,7 +98,7 @@ SELECT
     ROUND(AVG(infectious_disease_index), 3)         AS avg_infectious_index,
     ROUND(MIN(infectious_disease_index), 3)         AS best_control,
     ROUND(MAX(infectious_disease_index), 3)         AS worst_control
-FROM world_health_data_clean
+FROM world_health
 WHERE health_spending_category IS NOT NULL
     AND infectious_disease_index IS NOT NULL
 GROUP BY health_spending_category
@@ -117,7 +117,7 @@ SELECT
     ROUND(AVG(health_roi_score), 2)         AS avg_roi_score,
     ROUND(AVG(avoidable_mortality_index),3) AS avg_mortality_index,
     ROUND(AVG(infectious_disease_index),3)  AS avg_infectious_index
-FROM world_health_data_clean
+FROM world_health
 WHERE health_spending_pct_gdp IS NOT NULL
     AND life_expectancy_years IS NOT NULL
 GROUP BY
